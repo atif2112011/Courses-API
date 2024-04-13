@@ -1,0 +1,2 @@
+Hide SQL password
+Hide JWT Secret
