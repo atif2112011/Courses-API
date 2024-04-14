@@ -17,6 +17,7 @@ const Profile = ({ setUserState, username, userstate }) => {
     email: userstate.email,
     password: userstate.password,
   });
+  const [loader, setLoader] = useState(false);
 
   const handleSave = (formData) => {
     setUserProfile(formData);
@@ -80,7 +81,7 @@ const Profile = ({ setUserState, username, userstate }) => {
         />
       ) : (
         <div style={{ marginTop: "300px" }}>
-          <Courses />
+          <Courses userProfile={userProfile} />
         </div>
       )}
     </div>

@@ -2,12 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const multer = require("multer");
+const auth = require("./middlewares/auth");
 // const dbconfig = require("./config/dbconfig");
 const port = process.env.port || 5000;
 const { AddCourse } = require("./sql/db_functions");
 
 const User_Routes = require("./routes/User_Routes");
 const Courses_Routes = require("./routes/Courses_Routes");
+const Enrollment_Routes = require("./routes/Enrollment_Routes");
 const app = express();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -19,6 +21,7 @@ app.use(
 app.use(express.json());
 app.use(User_Routes);
 app.use(Courses_Routes);
+app.use(Enrollment_Routes);
 const startServer = async () => {
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
@@ -36,6 +39,20 @@ app.post("/check-post", async (req, res) => {
   console.log(req.body);
   console.log("hi");
   res.send(req.body);
+});
+
+app.get("/check-auth", auth, async (req, res) => {
+  try {
+    return res.send({
+      status: true,
+      message: "Authorization Middleware working",
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message: error.message,
+    });
+  }
 });
 
 startServer();
@@ -273,3 +290,5 @@ startServer();
 // }
 
 // iterateAndAddCourses(data);
+
+const render_API = "re_VQinHgaG_DUE4xrJXRXtvC9KGJjG2c1gQ";

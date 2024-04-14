@@ -140,7 +140,7 @@ exports.AddCourse = async (data) => {
 
 //Get Courses
 exports.GetCourses = async (data) => {
-  console.log(`QUery Recieved`, data);
+  // console.log(`QUery Recieved`, data);
   try {
     const response = await sql`SELECT * from courses ${
       data.type && data.type !== "all"
@@ -151,6 +151,7 @@ exports.GetCourses = async (data) => {
         ? sql`AND fees >= ${data.fee.min} and fees <= ${data.fee.max}`
         : sql``
     } 
+    ${data.id ? sql`AND id= ${data.id}` : sql``} 
     ${
       data.duration
         ? sql`AND duration >= ${data.duration.min} and duration <= ${data.duration.max}`
@@ -161,6 +162,74 @@ exports.GetCourses = async (data) => {
         ? sql`AND enrollment = ${data.enrollment}`
         : sql``
     } `;
+
+    return {
+      status: true,
+      data: response,
+    };
+  } catch (error) {
+    console.log(error.message);
+    return {
+      status: false,
+      error: error.message,
+    };
+  }
+};
+
+//Delete Course
+exports.DeleteCourse = async (data) => {
+  try {
+    const response = await sql`DELETE FROM courses WHERE id=${data.id}`;
+
+    return {
+      status: true,
+      data: response,
+    };
+  } catch (error) {
+    console.log(error.message);
+    return {
+      status: false,
+      error: error.message,
+    };
+  }
+};
+
+//Add Course Enrollment
+
+exports.AddEnrollment = async (data) => {
+  const course_enroll = {
+    user_id: data.user_id,
+    user_name: data.user_name,
+    course_id: data.course_id,
+    course_title: data.course_title,
+    enrollment_date: data.enrollment_date,
+  };
+  try {
+    const response = await sql`INSERT INTO enrollment ${sql(
+      course_enroll
+    )} returning *`;
+
+    return {
+      status: true,
+      data: response,
+    };
+  } catch (error) {
+    console.log(error.message);
+    return {
+      status: false,
+      error: error.message,
+    };
+  }
+};
+
+//Get Enrollment
+exports.GetEnrollment = async (data) => {
+  // console.log(`QUery Recieved`, data);
+  try {
+    const response = await sql`SELECT * from enrollment ${
+      data.id ? sql`WHERE id = ${data.id}` : sql`WHERE 1=1`
+    } ${data.user_id ? sql`AND user_id = ${data.user_id}` : sql``} 
+    ${data.course_id ? sql`AND course_id = ${data.course_id}` : sql``}`;
 
     return {
       status: true,

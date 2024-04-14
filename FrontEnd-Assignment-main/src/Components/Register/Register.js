@@ -5,6 +5,7 @@ import axios from "axios";
 
 import { useNavigate, NavLink } from "react-router-dom";
 import { RegisterUser } from "../../AxiosCalls/users";
+import SpinnerComponent from "../Spinner/spinner";
 const Register = () => {
   const navigate = useNavigate();
 
@@ -16,6 +17,7 @@ const Register = () => {
     password: "",
     cpassword: "",
   });
+  const [loader, setLoader] = useState(false);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -52,16 +54,22 @@ const Register = () => {
   };
   const signupHandler = async (e) => {
     e.preventDefault();
-    setFormErrors(validateForm(user));
+    const errors = validateForm(user);
+    setFormErrors(errors);
+    // setFormErrors(validateForm(user));
     console.log(user);
-    const response = await RegisterUser(user);
-    if (!response.status) {
-      alert(response.message);
-      console.log(response.message);
-    } else {
-      alert(response.message);
+    if (Object.values(errors).length === 0) {
+      await setLoader(true);
+      const response = await RegisterUser(user);
+      if (!response.status) {
+        alert(response.message);
+        console.log(response.message);
+      } else {
+        alert(response.message);
 
-      window.location.href = "http://localhost:3000/";
+        window.location.href = "http://localhost:3000/";
+      }
+      await setLoader(false);
     }
   };
 
@@ -69,6 +77,7 @@ const Register = () => {
   return (
     <>
       <div className={registerstyle.register}>
+        {loader && <SpinnerComponent />}
         <form>
           <h1>Create your account</h1>
           <input
@@ -77,10 +86,10 @@ const Register = () => {
             id="name"
             placeholder="First Name"
             onChange={changeHandler}
-            value={user.fname}
+            value={user.name}
           />
-          {/* <p className={basestyle.error}>{formErrors.fname}</p>
-          <input
+          <p className={basestyle.error}>{formErrors.name}</p>
+          {/* <input
             type="text"
             name="lname"
             id="lname"

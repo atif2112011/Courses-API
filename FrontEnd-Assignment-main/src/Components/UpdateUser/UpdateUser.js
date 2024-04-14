@@ -4,6 +4,7 @@ import basestyle from "../Base.module.css";
 import "./UpdateUser.css";
 import { UpdateProfile } from "../../AxiosCalls/users";
 import Resizer from "react-image-file-resizer";
+import SpinnerComponent from "../Spinner/spinner";
 
 const EditProfile = ({ userProfile, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const EditProfile = ({ userProfile, onSave, onCancel }) => {
     pfp: userProfile.pfp,
     pfpfileUpdated: null,
   });
+  const [loader, setLoader] = useState(false);
 
   console.log(formData);
 
@@ -119,6 +121,7 @@ const EditProfile = ({ userProfile, onSave, onCancel }) => {
     const errors = validateForm(formData);
     setFormErrors(errors);
     console.log(errors);
+    await setLoader(true);
     if (Object.values(errors).length === 0) {
       const response = await UpdateProfile(formData);
 
@@ -128,10 +131,12 @@ const EditProfile = ({ userProfile, onSave, onCancel }) => {
         // window.location.href = "http://localhost:3000/";
       }
     }
+    await setLoader(false);
   };
 
   return (
     <div className="UpdateUser">
+      {loader && <SpinnerComponent />}
       <h2>Edit Profile</h2>
       <form onSubmit={handleSubmit}>
         <div class="profile-picture">

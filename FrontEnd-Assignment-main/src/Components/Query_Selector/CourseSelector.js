@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GetCourses } from "../../AxiosCalls/courses";
-import "./CourseSelector.css"
-const CourseSelector = ({ courses, setCourses }) => {
+import "./CourseSelector.css";
+const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
   const [query, setQuery] = useState({
     type: "",
     fee: { min: 0, max: 300 },
@@ -40,6 +40,7 @@ const CourseSelector = ({ courses, setCourses }) => {
     if (response.status) {
       console.log(`Response`, response.data);
       await setCourses(response.data);
+      await setCurrentPage(1);
     }
   };
 
@@ -47,124 +48,122 @@ const CourseSelector = ({ courses, setCourses }) => {
     <div className="course-Type ">
       <label>Type:</label>
       <div className="subject">
-      <div>
-        <input
-          type="radio"
-          id="computerScience"
-          name="type"
-          value="Computer Science"
-          onChange={handleTypeChange}
-        />
-        <label htmlFor="computerScience">Computer Science</label>
+        <div>
+          <input
+            type="radio"
+            id="computerScience"
+            name="type"
+            value="Computer Science"
+            onChange={handleTypeChange}
+          />
+          <label htmlFor="computerScience">Computer Science</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="literature"
+            name="type"
+            value="Literature"
+            onChange={handleTypeChange}
+          />
+          <label htmlFor="literature">Literature</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="mathematics"
+            name="type"
+            value="Mathematics"
+            onChange={handleTypeChange}
+          />
+          <label htmlFor="mathematics">Mathematics</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="allType"
+            name="type"
+            value="all"
+            onChange={handleTypeChange}
+          />
+          <label htmlFor="allType">All</label>
+        </div>
       </div>
-      <div>
+      <div className="Range">
+        <label>Fee:</label>
         <input
-          type="radio"
-          id="literature"
-          name="type"
-          value="Literature"
-          onChange={handleTypeChange}
+          type="range"
+          name="min"
+          min="0"
+          max="300"
+          value={query.fee.min}
+          onChange={handleFeeChange}
         />
-        <label htmlFor="literature">Literature</label>
-      </div>
-      <div>
         <input
-          type="radio"
-          id="mathematics"
-          name="type"
-          value="Mathematics"
-          onChange={handleTypeChange}
+          type="range"
+          name="max"
+          min="0"
+          max="300"
+          value={query.fee.max}
+          onChange={handleFeeChange}
         />
-        <label htmlFor="mathematics">Mathematics</label>
-      </div>
-      <div>
-        <input
-          type="radio"
-          id="allType"
-          name="type"
-          value="all"
-          onChange={handleTypeChange}
-        />
-        <label htmlFor="allType">All</label>
-      </div>
-    </div>
-    <div className="Range">
-      <label>Fee:</label>
-      <input
-        type="range"
-        name="min"
-        min="0"
-        max="300"
-        value={query.fee.min}
-        onChange={handleFeeChange}
-      />
-      <input
-        type="range"
-        name="max"
-        min="0"
-        max="300"
-        value={query.fee.max}
-        onChange={handleFeeChange}
-      />
 
-      <label>Duration (weeks):</label>
-      <input
-        type="range"
-        name="min"
-        min="0"
-        max="12"
-        value={query.duration.min}
-        onChange={handleDurationChange}
-      />
-      <input
-        type="range"
-        name="max"
-        min="0"
-        max="12"
-        value={query.duration.max}
-        onChange={handleDurationChange}
-      />
+        <label>Duration (weeks):</label>
+        <input
+          type="range"
+          name="min"
+          min="0"
+          max="12"
+          value={query.duration.min}
+          onChange={handleDurationChange}
+        />
+        <input
+          type="range"
+          name="max"
+          min="0"
+          max="12"
+          value={query.duration.max}
+          onChange={handleDurationChange}
+        />
       </div>
-    <br/>
+      <br />
       <div className="Enrollment">
-      <label>Enrollment:</label>
+        <label>Enrollment:</label>
 
-      <div>
-        <input
-          type="radio"
-          id="open"
-          name="enrollment"
-          value="open"
-          onChange={handleEnrollmentChange}
-        />
-        <label htmlFor="open">Open</label>
+        <div>
+          <input
+            type="radio"
+            id="open"
+            name="enrollment"
+            value="open"
+            onChange={handleEnrollmentChange}
+          />
+          <label htmlFor="open">Open</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="closed"
+            name="enrollment"
+            value="closed"
+            onChange={handleEnrollmentChange}
+          />
+          <label htmlFor="closed">Closed</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="all"
+            name="enrollment"
+            value="all"
+            onChange={handleEnrollmentChange}
+          />
+          <label htmlFor="all">All</label>
+        </div>
       </div>
-      <div>
-        <input
-          type="radio"
-          id="closed"
-          name="enrollment"
-          value="closed"
-          onChange={handleEnrollmentChange}
-        />
-        <label htmlFor="closed">Closed</label>
-      </div>
-      <div>
-        <input
-          type="radio"
-          id="all"
-          name="enrollment"
-          value="all"
-          onChange={handleEnrollmentChange}
-        />
-        <label htmlFor="all">All</label>
-      </div>
-    </div>
       <button onClick={handleSearch}>Modify Search</button>
 
-      <div>
-      {/* <strong>Query:</strong> {JSON.stringify(query)} */}
-      </div>
+      <div>{/* <strong>Query:</strong> {JSON.stringify(query)} */}</div>
     </div>
   );
 };

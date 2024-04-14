@@ -4,6 +4,7 @@ import loginstyle from "./Login.module.css";
 import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { LoginUser, ValidateToken } from "../../AxiosCalls/users";
+import Spinner from "../Spinner/spinner";
 const Login = ({ setUserState }) => {
   const navigate = useNavigate();
   const [formErrors, setFormErrors] = useState({});
@@ -12,6 +13,7 @@ const Login = ({ setUserState }) => {
     email: "",
     password: "",
   });
+  const [loader, setLoader] = useState(false);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -36,21 +38,26 @@ const Login = ({ setUserState }) => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    setFormErrors(validateForm(user));
+    const errors = validateForm(user);
+    setFormErrors(errors);
     // setIsSubmit(true);
-
-    const response = await LoginUser(user);
-    if (!response.status) {
-      alert(response.message);
-      // console.log(response);
-    } else {
-      alert(response.message);
-      localStorage.setItem("token", response.token);
-      window.location.href = "http://localhost:3000/";
+    if (Object.values(errors).length === 0) {
+      await setLoader(true);
+      const response = await LoginUser(user);
+      await setLoader(false);
+      if (!response.status) {
+        alert(response.message);
+        // console.log(response);
+      } else {
+        alert(response.message);
+        localStorage.setItem("token", response.token);
+        window.location.href = "http://localhost:3000/";
+      }
     }
   };
 
   useEffect(async () => {
+    await setLoader(true);
     if (localStorage.getItem("token")) {
       const response = await ValidateToken({
         token: localStorage.getItem("token"),
@@ -69,9 +76,11 @@ const Login = ({ setUserState }) => {
         await setUserState(user);
       }
     }
+    await setLoader(false);
   }, [formErrors]);
   return (
     <div className={loginstyle.login}>
+      {loader && <Spinner />}
       <form>
         <h1>Login</h1>
         <input

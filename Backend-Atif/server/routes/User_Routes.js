@@ -12,6 +12,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const zxcvbn = require("zxcvbn");
+const SendMail = require("../resend/resend");
 
 cloudinary.config({
   cloud_name: "dufl26uv9",
@@ -78,6 +79,19 @@ router.post("/register", async (req, res) => {
     });
 
     if (!response.status) return res.send(response);
+
+    //Send Registration Mail
+    const emailResult = await SendMail({
+      recipient: req.body.email,
+      subject: "Registration Successfull",
+      html: "We are delighted to welcome you on our platform",
+    });
+
+    if (!emailResult.status)
+      return res.send({
+        status: false,
+        message: emailResult.message,
+      });
 
     return res.status(200).send({
       status: true,
