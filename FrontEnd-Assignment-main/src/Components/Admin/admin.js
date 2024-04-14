@@ -37,7 +37,7 @@ const AdminPanel = () => {
 
   const toggleEnrollment = (id) => {
     // Implement your logic to toggle enrollment status for a course
-    const response = await;
+    // const response = await;
   };
 
   const handleEdit = (id) => {
