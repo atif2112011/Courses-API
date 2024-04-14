@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { GetCourses } from "../../AxiosCalls/courses";
-
-const CourseSelector = ({
-  courses,
-  setCourses,
-  currentPage,
-  setCurrentPage,
-}) => {
+import "./CourseSelector.css"
+const CourseSelector = ({ courses, setCourses }) => {
   const [query, setQuery] = useState({
     type: "",
     fee: { min: 0, max: 300 },
@@ -45,14 +40,13 @@ const CourseSelector = ({
     if (response.status) {
       console.log(`Response`, response.data);
       await setCourses(response.data);
-
-      setCurrentPage(1);
     }
   };
 
   return (
-    <div>
+    <div className="course-Type ">
       <label>Type:</label>
+      <div className="subject">
       <div>
         <input
           type="radio"
@@ -93,7 +87,8 @@ const CourseSelector = ({
         />
         <label htmlFor="allType">All</label>
       </div>
-
+    </div>
+    <div className="Range">
       <label>Fee:</label>
       <input
         type="range"
@@ -129,8 +124,11 @@ const CourseSelector = ({
         value={query.duration.max}
         onChange={handleDurationChange}
       />
-
+      </div>
+    <br/>
+      <div className="Enrollment">
       <label>Enrollment:</label>
+
       <div>
         <input
           type="radio"
@@ -161,11 +159,11 @@ const CourseSelector = ({
         />
         <label htmlFor="all">All</label>
       </div>
-
+    </div>
       <button onClick={handleSearch}>Modify Search</button>
 
       <div>
-        <strong>Query:</strong> {JSON.stringify(query)}
+      {/* <strong>Query:</strong> {JSON.stringify(query)} */}
       </div>
     </div>
   );

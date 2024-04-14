@@ -82,9 +82,7 @@ function Courses() {
       console.log(response.data);
     } else console.log(`ERror`, response.message);
 
-    const totalPages = await Math.ceil(courses.length / coursesPerPage);
-    console.log(`Total:${totalPages} currentPAge:${currentPage}`);
-
+    const totalPages = Math.ceil(courses.length / coursesPerPage);
     if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
@@ -97,7 +95,7 @@ function Courses() {
     <div className="content">
       <div className="search-content">
         <form onSubmit={handleSearch}>
-          <input
+          <input style={{height:"30px"}}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -107,12 +105,7 @@ function Courses() {
         </form>
       </div>
       <div className="query">
-        <CourseSelector
-          courses={courses}
-          setCourses={setCourses}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <CourseSelector courses={courses} setCourses={setCourses} />
       </div>
       <div id="section">
         {/* {courses.map((course) => (
@@ -122,20 +115,22 @@ function Courses() {
           <CourseCard key={course.id} course={course} onEnroll={handleEnroll} />
         ))}
       </div>
-
+        <div className="navigate-butt">
       <button onClick={prevPage} disabled={currentPage === 1}>
         Previous Page
       </button>
       <span className="page-number">Page {currentPage}</span>
-      <button onClick={nextPage} disabled={indexOfLastCourse >= courses.length}>
+      <button className="next" onClick={nextPage} disabled={indexOfLastCourse >= courses.length}>
         Next Page
       </button>
+      </div>
       <div className="MyCourses">
         <h2>User Courses</h2>
         <ul>
           {userCourses.map((course) => (
-            <li key={course.id}>{course.name}</li>
+            <li key={course.id}>{course.title}</li>
           ))}
+        
         </ul>
       </div>
     </div>
