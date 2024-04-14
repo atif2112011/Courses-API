@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { GetCourses } from "../../AxiosCalls/courses";
 
-const CourseSelector = ({ courses, setCourses }) => {
+const CourseSelector = ({
+  courses,
+  setCourses,
+  currentPage,
+  setCurrentPage,
+}) => {
   const [query, setQuery] = useState({
     type: "",
     fee: { min: 0, max: 300 },
@@ -40,6 +45,8 @@ const CourseSelector = ({ courses, setCourses }) => {
     if (response.status) {
       console.log(`Response`, response.data);
       await setCourses(response.data);
+
+      setCurrentPage(1);
     }
   };
 

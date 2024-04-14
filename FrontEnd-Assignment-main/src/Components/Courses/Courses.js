@@ -82,7 +82,9 @@ function Courses() {
       console.log(response.data);
     } else console.log(`ERror`, response.message);
 
-    const totalPages = Math.ceil(courses.length / coursesPerPage);
+    const totalPages = await Math.ceil(courses.length / coursesPerPage);
+    console.log(`Total:${totalPages} currentPAge:${currentPage}`);
+
     if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
@@ -105,7 +107,12 @@ function Courses() {
         </form>
       </div>
       <div className="query">
-        <CourseSelector courses={courses} setCourses={setCourses} />
+        <CourseSelector
+          courses={courses}
+          setCourses={setCourses}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
       <div id="section">
         {/* {courses.map((course) => (
