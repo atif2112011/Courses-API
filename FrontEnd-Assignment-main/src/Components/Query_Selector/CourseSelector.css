@@ -1,0 +1,19 @@
+.course-selector {
+    display: flex;
+    flex-direction: column;
+    /* Add other styles as needed */
+  }
+  
+  .subject {
+    /* Styles for subject div */
+    display: flex;
+    margin-bottom: 10px;
+  }
+  .Range{
+    display: flex;
+
+  }
+  /* Add styles for other divs as needed */
+  .Enrollment{
+    display: flex;
+  }
