@@ -10,7 +10,7 @@ exports.AddNewUser = async (data) => {
     phone: null,
     gender: "male",
     pfp: "https://res.cloudinary.com/dufl26uv9/image/upload/v1691905656/zhnpoppaufp7tircsqm5.png",
-    isAdmin: false,
+    isadmin: false,
   };
   try {
     const response = await sql`INSERT INTO users ${sql(user)} returning *`;
@@ -72,7 +72,7 @@ exports.GetUserByEmail = async (data) => {
 };
 
 exports.UpdateUser = async (data) => {
-  console.log("data received in db", data);
+  // console.log("data received in db", data);
   const user = {
     id: data.id,
     name: data.name || "",
@@ -93,7 +93,7 @@ exports.UpdateUser = async (data) => {
     }
   }
 
-  console.log(columns);
+  // console.log(columns);
 
   try {
     const response = await sql`

@@ -61,7 +61,7 @@ router.post("/register", async (req, res) => {
     //CHeck password Strength
 
     const score = await zxcvbn(req.body.password);
-    if (score <= 3) {
+    if (score <= 2) {
       return res.send({
         status: false,
         message: "Weak Password..Use a strong one",
@@ -78,7 +78,11 @@ router.post("/register", async (req, res) => {
       password: req.body.password,
     });
 
-    if (!response.status) return res.send(response);
+    if (!response.status)
+      return res.send({
+        status: false,
+        message: response.message,
+      });
 
     //Send Registration Mail
     const emailResult = await SendMail({
