@@ -89,8 +89,9 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
           <label htmlFor="allType">All</label>
         </div>
       </div>
-      <div className="Range">
+      <div className="Range-Fee">
         <label>Fee:</label>
+        <br />
         <input
           type="range"
           name="min"
@@ -99,6 +100,7 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
           value={query.fee.min}
           onChange={handleFeeChange}
         />
+        <span>Rs.{query.fee.min}</span>
         <input
           type="range"
           name="max"
@@ -107,8 +109,10 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
           value={query.fee.max}
           onChange={handleFeeChange}
         />
-
+        <span>Rs.{query.fee.max}</span>
+        <br />
         <label>Duration (weeks):</label>
+        <br />
         <input
           type="range"
           name="min"
@@ -117,6 +121,8 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
           value={query.duration.min}
           onChange={handleDurationChange}
         />
+        <span>{query.duration.min} weeks</span>
+
         <input
           type="range"
           name="max"
@@ -125,6 +131,7 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
           value={query.duration.max}
           onChange={handleDurationChange}
         />
+        <span>{query.duration.max} weeks</span>
       </div>
       <br />
       <div className="Enrollment">

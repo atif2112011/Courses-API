@@ -1,38 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { GetCourses } from "../../AxiosCalls/courses";
+import { ValidateToken } from "../../AxiosCalls/users";
+import SpinnerComponent from "../Spinner/spinner";
 
 const AdminPanel = () => {
   const [courses, setCourses] = useState([]);
   const [tokenPresent, setTokenPresent] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [coursesPerPage] = useState(5);
+  const [userState, setUserState] = useState({});
+  const [loader, setLoader] = useState(false);
   useEffect(async () => {
+    await setLoader(true);
     const token = localStorage.getItem("token");
     if (token) {
       setTokenPresent(true);
-      // Mocking API call with hardcoded data for demonstration
-      //   setCourses([
-      //     {
-      //       id: 1,
-      //       type: "Computer Science",
-      //       duration: 12,
-      //       fees: 149.99,
-      //       enrollment: "closed",
-      //       title: "Database Management Systems",
-      //     },
-      //     {
-      //       id: 2,
-      //       type: "Mathematics",
-      //       duration: 10,
-      //       fees: 99.99,
-      //       enrollment: "open",
-      //       title: "Advanced Calculus",
-      //     },
-      //   ]);
+      const checkToken = await ValidateToken({
+        token: token,
+      });
+      if (checkToken.status) {
+        const user = {
+          fname: checkToken.data.name,
+          email: checkToken.data.email,
+          id: checkToken.data.id,
+          age: checkToken.data.age,
+          phone: checkToken.data.phone,
+          gender: checkToken.data.gender,
+          pfp: checkToken.data.pfp,
+          isadmin: checkToken.data.isadmin,
+        };
+        await setUserState(user);
+
+        if (!checkToken.data.isadmin) {
+          await setLoader(false);
+          alert("No admin privileges found");
+          window.location.href = "/";
+        }
+      }
 
       const response = await GetCourses();
       setCourses(response.data);
     }
+    await setLoader(false);
   }, []);
 
   const toggleEnrollment = (id) => {
@@ -60,8 +69,10 @@ const AdminPanel = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const nextPage = () => setCurrentPage(currentPage + 1);
   const prevPage = () => setCurrentPage(currentPage - 1);
+
   return (
     <div>
+      {loader && <SpinnerComponent />}
       {tokenPresent ? (
         <div>
           <button onClick={handleAddCourse}>Add Course</button>

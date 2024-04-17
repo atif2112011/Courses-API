@@ -18,6 +18,7 @@ const Profile = ({ setUserState, username, userstate }) => {
     password: userstate.password,
   });
   const [loader, setLoader] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleSave = (formData) => {
     setUserProfile(formData);
@@ -31,56 +32,53 @@ const Profile = ({ setUserState, username, userstate }) => {
   const [showProperties, setShowProperties] = useState(false);
 
   return (
-    <div className={profilestyle.profile}>
-      <h1 style={{ position: "absolute", top: 0, left: 0, color: "black" }}>
-        Welcome {username} !!
-      </h1>
-      <button
-        className={basestyle.button_common}
-        onClick={() => setShowProperties(!showProperties)}
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          padding: "10px 20px",
-          color: "#fff",
-          width: "150px",
-          border: "none",
-          borderRadius: "3px",
-          cursor: "pointer",
-        }}
-      >
-        Profile
-      </button>
+    <div className={profilestyle.header_div}>
+      <div className={profilestyle.header}>
+        <h1>Welcome {username} !!</h1>
+        <div className={profilestyle.dropdown}>
+          <button
+            className={basestyle.button_common}
+            onClick={() => (window.location.href = "/admin")}
+          >
+            Admin
+          </button>
+          <button
+            className={basestyle.button_common}
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            Profile
+          </button>
 
-      {showProperties && (
-        <div>
-          <button
-            className={basestyle.button_common}
-            onClick={() => setEditMode(true)}
-          >
-            Edit Profile
-          </button>
-          <button
-            className={basestyle.button_common}
-            onClick={() => {
-              localStorage.removeItem("token");
-              setUserState({});
-            }}
-          >
-            Logout
-          </button>
+          {showDropdown && (
+            <div className={profilestyle.dropdownContent}>
+              <button
+                className={basestyle.button_common}
+                onClick={() => setEditMode(true)}
+              >
+                Edit Profile
+              </button>
+              <button
+                className={basestyle.button_common}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  setUserState({});
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {editMode ? (
         <EditProfile
           userProfile={userProfile}
-          onSave={handleSave}
           onCancel={handleCancel}
+          setShowDropdown={setShowDropdown}
         />
       ) : (
-        <div style={{ marginTop: "300px" }}>
+        <div>
           <Courses userProfile={userProfile} />
         </div>
       )}

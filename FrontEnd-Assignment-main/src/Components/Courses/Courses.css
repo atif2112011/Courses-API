@@ -44,9 +44,10 @@
     margin-right:400px
   }
   .content {
-    position: absolute;
+    /* position: absolute;
     top: 100px;
-    left: 20px; 
+    left: 20px;  */
+    margin-left: 20px;
   }
   
   input[type="text"] {

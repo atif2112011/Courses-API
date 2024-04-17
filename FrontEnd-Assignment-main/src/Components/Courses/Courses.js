@@ -135,7 +135,7 @@ function Courses({ userProfile }) {
     if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
-    // setCurrentPage(1)
+    setCurrentPage(1);
     await setLoader(false);
   }, []);
 

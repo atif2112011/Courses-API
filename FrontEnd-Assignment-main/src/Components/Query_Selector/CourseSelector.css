@@ -1,6 +1,7 @@
 .course-selector {
     display: flex;
     flex-direction: column;
+    
     /* Add other styles as needed */
   }
   
@@ -16,4 +17,8 @@
   /* Add styles for other divs as needed */
   .Enrollment{
     display: flex;
+  }
+
+  .course-Type{
+    margin-left: 20px;
   }

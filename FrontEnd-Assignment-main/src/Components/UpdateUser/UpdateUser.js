@@ -1,12 +1,12 @@
 // EditProfile.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import basestyle from "../Base.module.css";
 import "./UpdateUser.css";
 import { UpdateProfile } from "../../AxiosCalls/users";
 import Resizer from "react-image-file-resizer";
 import SpinnerComponent from "../Spinner/spinner";
 
-const EditProfile = ({ userProfile, onSave, onCancel }) => {
+const EditProfile = ({ userProfile, onCancel, setShowDropdown }) => {
   const [formData, setFormData] = useState({
     id: userProfile.id,
     name: userProfile.fname,
@@ -134,6 +134,9 @@ const EditProfile = ({ userProfile, onSave, onCancel }) => {
     await setLoader(false);
   };
 
+  useEffect(() => {
+    setShowDropdown(false);
+  }, []);
   return (
     <div className="UpdateUser">
       {loader && <SpinnerComponent />}
