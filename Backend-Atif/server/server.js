@@ -5,6 +5,7 @@ const multer = require("multer");
 const auth = require("./middlewares/auth");
 // const dbconfig = require("./config/dbconfig");
 const port = process.env.port || 5000;
+const logger = require("./logger/logger");
 const { AddCourse } = require("./sql/db_functions");
 
 const User_Routes = require("./routes/User_Routes");
@@ -15,9 +16,13 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const cors = require("cors");
 app.use(cors());
-app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms")
-);
+// app.use(
+//   morgan(":method :url :status :res[content-length] - :response-time ms")
+// );
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
 app.use(express.json());
 app.use(User_Routes);
 app.use(Courses_Routes);

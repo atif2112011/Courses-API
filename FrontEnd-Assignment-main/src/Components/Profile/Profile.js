@@ -54,7 +54,7 @@ const Profile = ({ setUserState, username, userstate }) => {
       </button>
 
       {showProperties && (
-        <div style={{ position: "absolute", top: 150, right: 0 }}>
+        <div>
           <button
             className={basestyle.button_common}
             onClick={() => setEditMode(true)}

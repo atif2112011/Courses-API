@@ -10,6 +10,7 @@ exports.AddNewUser = async (data) => {
     phone: null,
     gender: "male",
     pfp: "https://res.cloudinary.com/dufl26uv9/image/upload/v1691905656/zhnpoppaufp7tircsqm5.png",
+    isAdmin: false,
   };
   try {
     const response = await sql`INSERT INTO users ${sql(user)} returning *`;
@@ -194,6 +195,42 @@ exports.DeleteCourse = async (data) => {
   }
 };
 
+//Update Courses
+exports.UpdateCourse = async (data) => {
+  // console.log(`QUery Recieved`, data);
+  const course = {
+    id: data.id,
+    title: data.title,
+    type: data.type,
+    duration: data.duration,
+    fees: data.fees,
+    enrollment: data.enrollment,
+  };
+  // console.log(`course`, course);
+  const columns = [];
+
+  for (let key in data) {
+    if (key !== "id" && data[key] != "null") {
+      columns.push(key);
+    }
+  }
+  // console.log(`columns`, columns);
+  try {
+    const response = await sql`UPDATE courses SET ${sql(course, columns)}
+    where id = ${course.id}
+  `;
+    return {
+      status: true,
+      data: response,
+    };
+  } catch (error) {
+    console.log(error.message);
+    return {
+      status: false,
+      error: error.message,
+    };
+  }
+};
 //Add Course Enrollment
 
 exports.AddEnrollment = async (data) => {
