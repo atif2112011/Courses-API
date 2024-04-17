@@ -7,6 +7,8 @@
 
 # testing
 /coverage
+combined.logs
+error.logs
 
 # production
 /build
