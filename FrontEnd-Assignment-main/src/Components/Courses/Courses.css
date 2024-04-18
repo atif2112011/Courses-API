@@ -20,15 +20,18 @@
     background:transparent;
     text-align: center;
   }
-  
+  .cards_enrolled{
+    display: flex;
+    flex-wrap: wrap;
+  }
   .MyCourses {
     
     /* width: 300px; Adjust the width as needed */
     margin: 10px; /* Adjust the margin as needed */
     padding: 10px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: transparent;
     text-align: center;
   }
   .cards_enrolled{
@@ -86,6 +89,8 @@
   }
   .navigate-butt{
     display:flex;
+    justify-content:center;
+
   }
   
   button:hover {
@@ -96,5 +101,10 @@
     display: flex;
     flex-wrap: wrap;
   }
-  
+  .page-number{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    color: white;
+  }
   

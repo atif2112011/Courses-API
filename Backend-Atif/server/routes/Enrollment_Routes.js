@@ -45,17 +45,17 @@ router.post("/addEnrollment", async (req, res) => {
     if (!response.status) return res.send(response);
 
     //Send Enrollment Mail
-    const emailResult = await SendMail({
-      recipient: req.body.email,
-      subject: "Course Enrollment Successful",
-      html: `Congratulation on your successful enrollment in ${course_title}`,
-    });
+//     const emailResult = await SendMail({
+//       recipient: req.body.email,
+//       subject: "Course Enrollment Successful",
+//       html: `Congratulation on your successful enrollment in ${course_title}`,
+//     });
 
-    if (!emailResult.status)
-      return res.send({
-        status: false,
-        message: emailResult.message,
-      });
+//     if (!emailResult.status)
+//       return res.send({
+//         status: false,
+//         message: emailResult.message,
+//       });
     return res.status(200).send({
       status: true,
       message: "Enrollment Added Successfully",

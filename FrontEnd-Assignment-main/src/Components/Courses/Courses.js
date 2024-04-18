@@ -1,4 +1,4 @@
-import React, { useDebugValue, useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import coursesData from "./ds.js";
 import "./Courses.css";
 import CourseSelector from "../Query_Selector/CourseSelector.js";
@@ -8,21 +8,20 @@ import {
   getUserEnrollment,
 } from "../../AxiosCalls/enrollment.js";
 import SpinnerComponent from "../Spinner/spinner.js";
+import basestyle from "../Base.module.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+
 function CourseCard({ course, onEnroll, userProfile, setUserCourses }) {
   const [enrolled, setEnrolled] = useState(false);
 
   const handleEnroll = async (course_id, course_title) => {
     // Callback to notify parent component about enrollment
-
-    //Get Current Date
-
     const date = new Date();
-
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
-
-    // This arrangement can be altered based on how we want the date's format to appear.
     let currentDate = `${year}-${month}-${day}`;
 
     const response = await AddEnrollment({
@@ -35,14 +34,13 @@ function CourseCard({ course, onEnroll, userProfile, setUserCourses }) {
 
     if (response.status) {
       alert(response.message);
-      // setEnrolled(true);
-      // onEnroll(course);
       const userEnrolledCourses = await getUserEnrollment({
         user_id: userProfile.id,
       });
-
       await setUserCourses(userEnrolledCourses.data);
-    } else alert(response.message);
+    } else {
+      alert(response.message);
+    }
   };
 
   return (
@@ -77,7 +75,7 @@ function CourseCard({ course, onEnroll, userProfile, setUserCourses }) {
         </tbody>
       </table>
       {!enrolled && (
-        <button onClick={() => handleEnroll(course.id, course.title)}>
+        <button className={basestyle.button_common} onClick={() => handleEnroll(course.id, course.title)}>
           Enroll
         </button>
       )}
@@ -92,6 +90,8 @@ function Courses({ userProfile }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [loader, setLoader] = useState(false);
+  const [showUserCourses, setShowUserCourses] = useState(false); // State to manage visibility of user enrolled courses
+
   const coursesPerPage = 8;
 
   const nextPage = () => {
@@ -101,6 +101,7 @@ function Courses({ userProfile }) {
   const prevPage = () => {
     setCurrentPage(currentPage - 1);
   };
+
   const handleEnroll = (course) => {
     setUserCourses([...userCourses, course]);
   };
@@ -116,20 +117,19 @@ function Courses({ userProfile }) {
   };
 
   useEffect(async () => {
-    //Fetch UserEnrolled Courses
     await setLoader(true);
     const userEnrolledCourses = await getUserEnrollment({
       user_id: userProfile.id,
     });
-
     await setUserCourses(userEnrolledCourses.data);
 
-    //Fetch all courses
     const response = await GetCourses();
     if (response.status) {
       setCourses(response.data);
       console.log(response.data);
-    } else console.log(`ERror`, response.message);
+    } else {
+      console.log(`Error`, response.message);
+    }
 
     const totalPages = Math.ceil(courses.length / coursesPerPage);
     if (currentPage > totalPages) {
@@ -142,6 +142,7 @@ function Courses({ userProfile }) {
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
   const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
+
   return (
     <div className="content">
       {loader && <SpinnerComponent />}
@@ -154,7 +155,7 @@ function Courses({ userProfile }) {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for a course..."
           />
-          <button type="submit">Search</button>
+          <button className={basestyle.button_common}>Search</button>
         </form>
       </div>
       <div className="query">
@@ -165,9 +166,6 @@ function Courses({ userProfile }) {
         />
       </div>
       <div id="section">
-        {/* {courses.map((course) => (
-          <CourseCard key={course.id} course={course} onEnroll={handleEnroll} />
-        ))} */}
         {currentCourses.map((course) => (
           <CourseCard
             key={course.id}
@@ -178,57 +176,65 @@ function Courses({ userProfile }) {
           />
         ))}
       </div>
+      <span className="page-number">Page {currentPage}</span>
       <div className="navigate-butt">
-        <button onClick={prevPage} disabled={currentPage === 1}>
-          Previous Page
+        <button className={basestyle.button_common} onClick={prevPage} disabled={currentPage === 1}>
+          Previous Page <FontAwesomeIcon icon={faArrowLeft} />
         </button>
-        <span className="page-number">Page {currentPage}</span>
+        
         <button
-          className="next"
+          className={basestyle.button_common}
           onClick={nextPage}
           disabled={indexOfLastCourse >= courses.length}
         >
-          Next Page
+          Next Page <FontAwesomeIcon icon={faArrowRight} />
         </button>
       </div>
       <div className="MyCourses">
-        <h2>User Enrolled Courses</h2>
-        <div className="cards_enrolled">
-          {userCourses.map((course) => (
-            <div className="card">
-              <h3>{course.title}</h3>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <strong>Type:</strong>
-                    </td>
-                    <td>{course.type}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Duration:</strong>
-                    </td>
-                    <td>{course.duration}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Fees:</strong>
-                    </td>
-                    <td>{course.fees}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Enrolled On: </strong>
-                    </td>
-                    <td>{course.enrollment_date.slice(0, 10)}</td>
-                  </tr>
-                </tbody>
-              </table>
+        <button className={basestyle.button_common} onClick={() => setShowUserCourses(!showUserCourses)}>
+           Enrolled Courses
+        </button>
+        {showUserCourses && (
+          <>
+            <div className="cards_enrolled">
+              {userCourses.map((course) => (
+                <div className="card" key={course.id}>
+                  <h3>{course.title}</h3>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <strong>Type:</strong>
+                        </td>
+                        <td>{course.type}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Duration:</strong>
+                        </td>
+                        <td>{course.duration}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Fees:</strong>
+                        </td>
+                        <td>{course.fees}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Enrolled On: </strong>
+                        </td>
+                        <td>{course.enrollment_date.slice(0, 10)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
+
     </div>
   );
 }

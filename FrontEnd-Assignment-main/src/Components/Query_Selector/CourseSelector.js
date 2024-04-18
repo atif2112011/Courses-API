@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GetCourses } from "../../AxiosCalls/courses";
+import basestyle from "../Base.module.css";
 import "./CourseSelector.css";
 const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
   const [query, setQuery] = useState({
@@ -168,7 +169,7 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
           <label htmlFor="all">All</label>
         </div>
       </div>
-      <button onClick={handleSearch}>Modify Search</button>
+      <button className={basestyle.button_common} onClick={handleSearch}>Modify Search</button>
 
       <div>{/* <strong>Query:</strong> {JSON.stringify(query)} */}</div>
     </div>

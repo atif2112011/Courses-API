@@ -1,0 +1,15 @@
+
+.navigator{
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto; /* Horizontally center the container */
+    margin-top: 10px;
+}
+  
+.page-number{
+    display: flex;
+    justify-content: center;
+    color:white;
+}

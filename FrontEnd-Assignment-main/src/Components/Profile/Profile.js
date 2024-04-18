@@ -4,6 +4,7 @@ import profilestyle from "./Profile.module.css";
 import EditProfile from "../UpdateUser/UpdateUser";
 import Courses from "../Courses/Courses";
 
+
 const Profile = ({ setUserState, username, userstate }) => {
   const [editMode, setEditMode] = useState(false);
   const [userProfile, setUserProfile] = useState({
@@ -33,7 +34,7 @@ const Profile = ({ setUserState, username, userstate }) => {
 
   return (
     <div className={profilestyle.header_div}>
-      <div className={profilestyle.header}>
+      <div className={profilestyle.header || "dropdown"}>
         <h1>Welcome {username} !!</h1>
         <div className={profilestyle.dropdown}>
           <button
@@ -43,7 +44,7 @@ const Profile = ({ setUserState, username, userstate }) => {
             Admin
           </button>
           <button
-            className={basestyle.button_common}
+            className={basestyle.button_common || "dropbtn"}
             onClick={() => setShowDropdown(!showDropdown)}
           >
             Profile
