@@ -71,6 +71,7 @@ exports.GetUserByEmail = async (data) => {
   }
 };
 
+//Update User Details
 exports.UpdateUser = async (data) => {
   // console.log("data received in db", data);
   const user = {
@@ -162,7 +163,8 @@ exports.GetCourses = async (data) => {
       data.enrollment && data.enrollment !== "all"
         ? sql`AND enrollment = ${data.enrollment}`
         : sql``
-    } `;
+    } 
+     ORDER BY title`;
 
     return {
       status: true,
@@ -231,6 +233,7 @@ exports.UpdateCourse = async (data) => {
     };
   }
 };
+
 //Add Course Enrollment
 
 exports.AddEnrollment = async (data) => {

@@ -1,12 +1,14 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const multer = require("multer");
+
 const auth = require("./middlewares/auth");
 // const dbconfig = require("./config/dbconfig");
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 const logger = require("./logger/logger");
-const { AddCourse } = require("./sql/db_functions");
+const path = require("path");
 
 const User_Routes = require("./routes/User_Routes");
 const Courses_Routes = require("./routes/Courses_Routes");
@@ -15,6 +17,9 @@ const app = express();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const cors = require("cors");
+app.use(
+  express.static(path.join(__dirname, "../../FrontEnd-Assignment-main/build"))
+);
 app.use(cors());
 // app.use(
 //   morgan(":method :url :status :res[content-length] - :response-time ms")
@@ -33,7 +38,7 @@ const startServer = async () => {
   });
 };
 
-app.get("/", (req, res) => {
+app.get("/check", (req, res) => {
   res.send({
     status: "success",
     message: "Server is running successfully",
@@ -295,5 +300,3 @@ startServer();
 // }
 
 // iterateAndAddCourses(data);
-
-const render_API = "re_VQinHgaG_DUE4xrJXRXtvC9KGJjG2c1gQ";

@@ -9,9 +9,9 @@ import {
 } from "../../AxiosCalls/enrollment.js";
 import SpinnerComponent from "../Spinner/spinner.js";
 import basestyle from "../Base.module.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 function CourseCard({ course, onEnroll, userProfile, setUserCourses }) {
   const [enrolled, setEnrolled] = useState(false);
@@ -75,7 +75,10 @@ function CourseCard({ course, onEnroll, userProfile, setUserCourses }) {
         </tbody>
       </table>
       {!enrolled && (
-        <button className={basestyle.button_common} onClick={() => handleEnroll(course.id, course.title)}>
+        <button
+          className={basestyle.button_common}
+          onClick={() => handleEnroll(course.id, course.title)}
+        >
           Enroll
         </button>
       )}
@@ -106,14 +109,16 @@ function Courses({ userProfile }) {
     setUserCourses([...userCourses, course]);
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
+    await setLoader(true);
     const filteredCourses = courses.filter((course) =>
       course.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setCourses(filteredCourses);
     setSearchQuery("");
     setCurrentPage(1);
+    await setLoader(false);
   };
 
   useEffect(async () => {
@@ -163,6 +168,7 @@ function Courses({ userProfile }) {
           courses={courses}
           setCourses={setCourses}
           setCurrentPage={setCurrentPage}
+          setLoader={setLoader}
         />
       </div>
       <div id="section">
@@ -178,10 +184,14 @@ function Courses({ userProfile }) {
       </div>
       <span className="page-number">Page {currentPage}</span>
       <div className="navigate-butt">
-        <button className={basestyle.button_common} onClick={prevPage} disabled={currentPage === 1}>
+        <button
+          className={basestyle.button_common}
+          onClick={prevPage}
+          disabled={currentPage === 1}
+        >
           Previous Page <FontAwesomeIcon icon={faArrowLeft} />
         </button>
-        
+
         <button
           className={basestyle.button_common}
           onClick={nextPage}
@@ -191,8 +201,11 @@ function Courses({ userProfile }) {
         </button>
       </div>
       <div className="MyCourses">
-        <button className={basestyle.button_common} onClick={() => setShowUserCourses(!showUserCourses)}>
-           Enrolled Courses
+        <button
+          className={basestyle.button_common}
+          onClick={() => setShowUserCourses(!showUserCourses)}
+        >
+          Enrolled Courses
         </button>
         {showUserCourses && (
           <>
@@ -234,7 +247,6 @@ function Courses({ userProfile }) {
           </>
         )}
       </div>
-
     </div>
   );
 }

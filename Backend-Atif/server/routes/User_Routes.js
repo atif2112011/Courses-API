@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
@@ -14,19 +16,20 @@ const jwt = require("jsonwebtoken");
 const zxcvbn = require("zxcvbn");
 const SendMail = require("../resend/resend");
 
+//Cloudinary Setup
 cloudinary.config({
   cloud_name: "dufl26uv9",
   api_key: "774326173281585",
-  api_secret: "2sZc_0GzYr1D1G1duNLau2So6kE",
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
 
 // Multer upload setup
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Specify the directory where files will be saved temporarily
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use the original file name for saving
+    cb(null, file.originalname);
   },
 });
 
@@ -279,4 +282,5 @@ router.post(
     }
   }
 );
+
 module.exports = router;

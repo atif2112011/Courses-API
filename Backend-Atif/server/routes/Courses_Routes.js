@@ -81,7 +81,7 @@ router.post("/deleteCourse", async (req, res) => {
     }
 
     const response = await DeleteCourse({
-      id: course_id,
+      id: req.body.id,
     });
 
     if (!response.status)

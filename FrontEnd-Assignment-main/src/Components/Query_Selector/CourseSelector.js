@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GetCourses } from "../../AxiosCalls/courses";
 import basestyle from "../Base.module.css";
 import "./CourseSelector.css";
-const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
+const CourseSelector = ({ courses, setCourses, setCurrentPage, setLoader }) => {
   const [query, setQuery] = useState({
     type: "",
     fee: { min: 0, max: 300 },
@@ -37,12 +37,14 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
 
   const handleSearch = async () => {
     // Your search logic here
+    await setLoader(true);
     const response = await GetCourses(query);
     if (response.status) {
       console.log(`Response`, response.data);
       await setCourses(response.data);
       await setCurrentPage(1);
     }
+    await setLoader(false);
   };
 
   return (
@@ -169,7 +171,9 @@ const CourseSelector = ({ courses, setCourses, setCurrentPage }) => {
           <label htmlFor="all">All</label>
         </div>
       </div>
-      <button className={basestyle.button_common} onClick={handleSearch}>Modify Search</button>
+      <button className={basestyle.button_common} onClick={handleSearch}>
+        Modify Search
+      </button>
 
       <div>{/* <strong>Query:</strong> {JSON.stringify(query)} */}</div>
     </div>

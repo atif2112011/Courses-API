@@ -3,7 +3,7 @@ import basestyle from "../Base.module.css";
 import profilestyle from "./Profile.module.css";
 import EditProfile from "../UpdateUser/UpdateUser";
 import Courses from "../Courses/Courses";
-
+import { Link } from "react-router-dom";
 
 const Profile = ({ setUserState, username, userstate }) => {
   const [editMode, setEditMode] = useState(false);
@@ -37,12 +37,10 @@ const Profile = ({ setUserState, username, userstate }) => {
       <div className={profilestyle.header || "dropdown"}>
         <h1>Welcome {username} !!</h1>
         <div className={profilestyle.dropdown}>
-          <button
-            className={basestyle.button_common}
-            onClick={() => (window.location.href = "/admin")}
-          >
-            Admin
-          </button>
+          <Link to={`admin`}>
+            <button className={basestyle.button_common}>Admin</button>
+          </Link>
+
           <button
             className={basestyle.button_common || "dropbtn"}
             onClick={() => setShowDropdown(!showDropdown)}

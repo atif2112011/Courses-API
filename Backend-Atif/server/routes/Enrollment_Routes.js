@@ -4,6 +4,7 @@ const {
   GetEnrollment,
   GetCourses,
 } = require("../sql/db_functions");
+const SendMail = require("../resend/resend");
 const router = express.Router();
 
 //Add Enrollment
@@ -44,18 +45,18 @@ router.post("/addEnrollment", async (req, res) => {
     });
     if (!response.status) return res.send(response);
 
-    //Send Enrollment Mail
-//     const emailResult = await SendMail({
-//       recipient: req.body.email,
-//       subject: "Course Enrollment Successful",
-//       html: `Congratulation on your successful enrollment in ${course_title}`,
-//     });
+    // Send Enrollment Mail
+    const emailResult = await SendMail({
+      recipient: req.body.email,
+      subject: "Course Enrollment Successful",
+      html: `Congratulation on your successful enrollment in ${req.body.course_title}`,
+    });
 
-//     if (!emailResult.status)
-//       return res.send({
-//         status: false,
-//         message: emailResult.message,
-//       });
+    if (!emailResult.status)
+      return res.send({
+        status: false,
+        message: emailResult.message,
+      });
     return res.status(200).send({
       status: true,
       message: "Enrollment Added Successfully",
@@ -71,6 +72,7 @@ router.post("/addEnrollment", async (req, res) => {
   }
 });
 
+//Get all enrollments
 router.post("/getEnrollment", async (req, res) => {
   try {
     const response = await GetEnrollment(req.body);

@@ -1,11 +1,13 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const { Resend } = require("resend");
-
-const resend = new Resend("re_VQinHgaG_DUE4xrJXRXtvC9KGJjG2c1gQ");
+const api = process.env.RESEND_API;
+const resend = new Resend(api);
 
 async function SendMail(input) {
   const { data, error } = await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
-    to: "atif251171@gmail.com", //for testing purposes
+    to: process.env.RESEND_EMAIL, //for testing purposes
     subject: input.subject,
     html: input.html,
   });
