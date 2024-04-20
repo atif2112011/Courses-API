@@ -23,6 +23,7 @@
     "postgres": "^3.4.4",
     "resend": "^3.2.0",
     "validator": "^13.11.0",
+    "winston": "^3.13.0",
     "zxcvbn": "^4.4.2"
   }
 }
