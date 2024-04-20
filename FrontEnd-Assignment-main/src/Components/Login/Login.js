@@ -51,7 +51,7 @@ const Login = ({ setUserState }) => {
       } else {
         alert(response.message);
         localStorage.setItem("token", response.token);
-        window.location.href = "http://localhost:3000/";
+        window.location.href = "/";
       }
     }
   };

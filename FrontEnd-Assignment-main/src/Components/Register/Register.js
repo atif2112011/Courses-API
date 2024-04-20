@@ -67,7 +67,7 @@ const Register = () => {
       } else {
         alert(response.message);
 
-        window.location.href = "http://localhost:3000/";
+        window.location.href = "/";
       }
       await setLoader(false);
     }
