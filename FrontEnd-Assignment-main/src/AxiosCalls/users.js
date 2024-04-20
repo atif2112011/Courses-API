@@ -4,10 +4,7 @@ import { axiosInstance } from "./AxiosInstance";
 
 export const RegisterUser = async (payload) => {
   try {
-    const response = await axiosInstance.post(
-      "http://localhost:5000/register",
-      payload
-    );
+    const response = await axiosInstance.post("/register", payload);
     return response.data;
   } catch (error) {
     return error.message;
@@ -27,10 +24,7 @@ export const LoginUser = async (payload) => {
 
 export const ValidateToken = async (payload) => {
   try {
-    const response = await axiosInstance.post(
-      "http://localhost:5000/validatetoken",
-      payload
-    );
+    const response = await axiosInstance.post("/validatetoken", payload);
     return response.data;
   } catch (error) {
     return error.message;
@@ -64,15 +58,11 @@ export const UpdateProfile = async (payload) => {
     formData.append("phone", payload.phone);
     formData.append("gender", payload.gender);
 
-    const response = await axiosInstance.post(
-      "http://localhost:5000/updateUser",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await axiosInstance.post("/updateUser", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     return error.message;

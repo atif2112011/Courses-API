@@ -3,10 +3,7 @@ import { axiosInstance } from "./AxiosInstance";
 //Add ENrollment to course
 export const AddEnrollment = async (payload) => {
   try {
-    const response = await axiosInstance.post(
-      "http://localhost:5000/addEnrollment",
-      payload
-    );
+    const response = await axiosInstance.post("/addEnrollment", payload);
     return response.data;
   } catch (error) {
     return error.message;
@@ -16,10 +13,7 @@ export const AddEnrollment = async (payload) => {
 //Get UserEnrollments
 export const getUserEnrollment = async (payload) => {
   try {
-    const response = await axiosInstance.post(
-      "http://localhost:5000/getUserEnrollment",
-      payload
-    );
+    const response = await axiosInstance.post("/getUserEnrollment", payload);
     return response.data;
   } catch (error) {
     return error.message;
